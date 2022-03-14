@@ -2,7 +2,7 @@
 
 import bcrypt from "bcrypt";
 import { uuid } from "../utils/uuid";
-import userCache from "../caches/user.cache";
+import UserCache from "../caches/user.cache";
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(
@@ -52,10 +52,8 @@ module.exports = (sequelize, DataTypes) => {
 
     // 생성 후 캐시에 저장
     User.afterSave(async (user, options) => {
-        // updatedAt 은 패스
-        if (!user.changed("updatedAt")) {
-            await userCache.store(user);
-        }
+        const userCache = new UserCache();
+        await userCache.store(user);
     });
 
     // print
