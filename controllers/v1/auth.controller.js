@@ -43,6 +43,7 @@ const login = async (req, res, next) => {
 
 const tokenTest = async (req, res, next) => {
     try {
+        return next(createError(500, "테스트 에러"));
         return response(res, req.user);
     } catch (e) {
         next(e);
